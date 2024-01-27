@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="match_parent">
+    <CheckBox
+        android:id="@+id/cb_All"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="All"
+        android:onClick="onCheckboxClicked"/>
+    <CheckBox
+        android:id="@+id/cb_jaunpur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Jaunpur"
+        android:onClick="onCheckboxClicked"/>
+    <CheckBox
+        android:id="@+id/cb_Lucknow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lucknow"
+        android:onClick="onCheckboxClicked"/>
+    <CheckBox
+        android:id="@+id/cb_meerut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meerut"
+        android:onClick="onCheckboxClicked"/>
+
+    <CheckBox
+        android:id="@+id/cb_rampur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rampur"
+        android:onClick="onCheckboxClicked"/>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+</LinearLayout>

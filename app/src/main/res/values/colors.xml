@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#cccccc</color>
+    <color name="colorAccent">#2196f3</color>
+
+    <color name="colorAppBackground">#e6e6e6</color>
+    <color name="colorSanskritRed">#ff0006</color>
+    <color name="colorSanskritYellow">#ffff19</color>
+    <color name="colorSanskritBlue">#0000fe</color>
+
+    <color name="colorPrakritLightYellow">#f9ff98</color>
+    <color name="colorPrakritLightGreen">#c8ff01</color>
+    <color name="colorPrakritGreen">#339933</color>
+
+    <color name="colorText">#333333</color>
+    <color name="colorTagGrey">#808080</color>
+</resources>
+

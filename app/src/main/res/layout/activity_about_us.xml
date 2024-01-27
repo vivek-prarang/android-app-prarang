@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_about_us"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="com.riversanskiriti.prarang.activity.AboutUsActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:stateListAnimator="@transition/appbar_always_elevated">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:background="@color/colorAppBackground"
+        android:id="@+id/buttonsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/shareButtonView"
+                style="@style/PB_Layout">
+
+                <ImageView
+                    style="@style/PB_Icon"
+                    ads:srcCompat="@drawable/ic_share" />
+
+                <TextView
+                    style="@style/PB_Title"
+                    android:text="@string/title_share" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rateButtonView"
+                style="@style/PB_Layout">
+
+                <ImageView
+                    style="@style/PB_Icon"
+                    ads:srcCompat="@drawable/ic_star" />
+
+                <TextView
+                    style="@style/PB_Title"
+                    android:text="@string/title_rate" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+<!--        <com.google.android.gms.ads.AdView-->
+<!--            android:id="@+id/adView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="gone"-->
+<!--            ads:adSize="SMART_BANNER"-->
+<!--            ads:adUnitId="@string/admob_banner_id" />-->
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/buttonsView"
+        android:layout_below="@id/appBarLayout"
+        android:background="@android:color/transparent" />
+</RelativeLayout>

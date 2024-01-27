@@ -1,0 +1,178 @@
+<resources>
+    <string name="app_name">PRARANG</string>
+
+    <!--Title-->
+    <string name="title_home">Home</string>
+    <string name="title_login">Login</string>
+
+    <!--Post Button Title-->
+    <string name="title_share">Share</string>
+    <string name="title_like">Like</string>
+    <string name="title_comment">Comment</string>
+    <string name="title_gulak">Save</string>
+    <string name="title_rate">Rate</string>
+    <string name="title_showtag">Show Tags</string>
+
+    <!--Tabs-->
+    <string name="tab_patra">Color Feeds</string>
+    <string name="tab_prarang">Balance</string>
+    <string name="tab_gulak">Bank</string>
+    <string name="tab_city_portals">City Portals</string>
+
+    <!--toolbar-->
+    <string name="toolbar_geography">Choose Geography</string>
+    <string name="toolbar_changelang">You can change your language later from profile setting</string>
+
+    <!-- Login Activity-->
+    <string name="hint_enternumber">Enter your contact number</string>
+    <string name="hint_entername">Write your name </string>
+    <string name="hint_enterotp">Enter O.T.P</string>
+    <string name="text_viewhindi">See posts in hindi</string>
+    <string name="text_viewenglish">See posts in english</string>
+    <string name="button_enter">Enter</string>
+    <string name="text_resend">Resend</string>
+    <string name="text_otpdetail">A six digit OTP has been sent by S.M.S to your mobile phone number. Please type this number here and press enter button</string>
+
+
+    <string name="text_menu_changelang">Change Language</string>
+    <string name="text_menu_aboutus">About Us</string>
+    <string name="text_menu_apptour">Tutorials</string>
+    <string name="text_menu_city_portals">-----CITY PORTALS----</string>
+    <string name="text_menu_rampur">Rampur Portal</string>
+    <string name="text_menu_meerut">Meerut Portal</string>
+    <string name="text_menu_lucknow">Lucknow Portal</string>
+    <string name="text_menu_jaunpur">Jaunpur Portal</string>
+
+
+    <string name="cityportal_tab_rampur">Rampur</string>
+    <string name="cityportal_tab_meerut">Meerut</string>
+    <string name="cityportal_tab_lucknow">Lucknow</string>
+    <string name="cityportal_tab_jaunpur">Jaunpur</string>
+
+    <!-- SelectLanguage Activity-->
+    <string name="button_ahead">Continue Ahead</string>
+    <string name="button_submit">Submit</string>
+    <string name="button_dismiss">Dismiss</string>
+    <string name="checkbox_all">All</string>
+
+    <!--Prarang Fragment-->
+    <string name="text_sanskrit">Culture</string>
+    <string name="text_prakrit">Nature</string>
+    <string name="text_s1">Timelines</string>
+    <string name="text_s2">Man &amp;#38; his Senses</string>
+    <string name="text_s3">Man &amp;#38; his Inventions</string>
+    <string name="text_p1">Geography</string>
+    <string name="text_p2">Fauna</string>
+    <string name="text_p3">Flora</string>
+
+    <!-- Messages-->
+    <string name="msg_selectLang">Please select a language first.</string>
+    <string name="cond_selectothercity">*Select other cities.</string>
+
+    <!--Login Messages-->
+    <string name="msg_selectonegeo">Please select at least one Geography</string>
+    <string name="msg_selectoneviewpost">Please enable at least once view post.</string>
+    <string name="msg_alreadyselected">is already selected. Please select again.</string>
+
+    // older
+    <!--    <string name="text_citypost">City</string>-->
+    <!--    <string name="text_regionpost">Region</string>-->
+    <!--    <string name="text_countrypost">Country</string>-->
+
+    // Newer
+    <string name="text_rampur">Rampur</string>
+    <string name="text_meerut">Meerut</string>
+    <string name="text_lucknow">Lucknow</string>
+    <string name="text_jaunpur">Jaunpur</string>
+
+    <string name="filter_city">Choose City</string>
+    <string name="filter_region">Choose Region</string>
+    <string name="filter_country">Choose Country</string>
+
+    <string name="no_city">None</string>
+    <string name="no_region">None</string>
+    <string name="no_country">None</string>
+
+    <!--Portal Links-->
+
+    <string name="rampur_portal_links">http://prarang.in/rampur</string>
+    <string name="meerut_portal_links">http://prarang.in/meerut</string>
+    <string name="lucknow_portal_links">http://prarang.in/lucknow</string>
+    <string name="jaunpur_portal_links">http://prarang.in/jaunpur</string>
+
+    <!--Comments-->
+    <string name="text_addcomment">Add a comment here</string>
+    <string name="text_norecordfound">No record found!</string>
+
+    <!--Common Messages-->
+    <string name="msg_common">Something went wrong or network time out! please check your internet connection and settings.</string>
+    <string name="more">More</string>
+    <string name="viewmore">View More</string>
+    <string name="msg_uniquegeo">Please select a unique geography region</string>
+    <string name="msg_networkerror">Not connected to Internet. Saved “Letters” are available in the “Bank”</string>
+    <string name="msg_nointernet">Please check your internet connection.</string>
+    <string name="msg_nochitti">Please save letters in the bank</string>
+    <string name="msg_savebank">Saved</string>
+
+    <string name="sharetext_aboutus">Fill your life with the colour of Culture and nature, press the below link to download Prarang App.</string>
+    <string name="msg_exit">Please press again to exit</string>
+    <string name="msg_noletter">Sorry, no letters here, choose other geography!</string>
+    <!--tutorial-->
+    <string name="skip">Skip</string>
+    <string name="done">Done</string>
+    <string-array name="tutorial">
+        <item>
+            <title>Home#</title>
+            <content>Click on any post to open it.</content>
+        </item>
+        <item>
+            <title>Select Geography#</title>
+            <content>Select a City, Region &amp; Country of your interest. You can select one in each category or opt to choose \'All\'. By default, \'All\' is already selected.</content>
+        </item>
+        <item>
+            <title>Profile#</title>
+            <content>Here you can upload your photo, select the language of your choice, access the City Portals and also browse the application tutorials.</content>
+        </item>
+        <item>
+            <title>Post#</title>
+            <content>Once you click on a picture on the Home tab, the whole post opens up. You can share, like, save and comment on the post as well.</content>
+        </item>
+        <item>
+            <title>Swipe for next post#</title>
+            <content>Swipe right or left to navigate between posts.</content>
+        </item>
+        <item>
+            <title>Balance#</title>
+            <content>This tab allows you to analyse the City/Region related posts according to the classification and tags allotted to them. This section is divided into two major parts - Culture &amp; Nature - and each part is further sub-divided into three parts. These sub divisions further have ten parts, which make 60 complete tags.</content>
+        </item>
+        <item>
+            <title>City Portals#</title>
+            <content>This tab allows you to access the Prarang City Portals. Click on any of the Cities and you will be redirected to the respective city\'s portal in your browser. The Portals contain a variety of features including the city\'s Weather, Sports, News, Entertainment, Employment, Business and a lot more.</content>
+        </item>
+        <item>
+            <title>Bank#</title>
+            <content>Saved letters can be seen in this tab. Once you have saved a post in your Bank, you can even access it offline.</content>
+        </item>
+    </string-array>
+
+
+    <!--========================================================================================================================-->
+    <!-- AdMob ad unit IDs -->
+    <!--<string name="admob_banner_id">ca-app-pub-3940256099942544/6300978111</string>-->
+
+    <string name="admob_banner_id">ca-app-pub-2564889504860735/6848977603</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="invalid_mobileno">Please enter a valid mobile no</string>
+
+    <integer name="btnplusview">1</integer>
+    <!-- TODO: Remove or change this placeholder text -->
+
+
+
+    <string name="facebook_app_id" translatable="false">1396585230753184</string>
+    <string name="fb_login_protocol_scheme" translatable="false">1396585230753184</string>
+    <string name="facebook_client_token" translatable="false">61353b78afecdd34f56b988ca8837d63</string>
+
+</resources>

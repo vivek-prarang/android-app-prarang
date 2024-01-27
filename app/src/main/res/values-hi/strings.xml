@@ -1,0 +1,180 @@
+<resources>
+    <string name="app_name">प्रांग</string>
+
+    <!--Title-->
+    <string name="title_home">घर</string>
+    <string name="title_login">Login</string>
+
+    <!--Post Button Title-->
+    <string name="title_share">सांझा करें</string>
+    <string name="title_like">पसंद करें</string>
+    <string name="title_comment">टिप्पणी करे</string>
+    <string name="title_gulak">संरक्षित करें</string>
+    <string name="title_rate">मूल्यांकन करें</string>
+    <string name="title_showtag">Show Tags</string>
+
+    <!--Tabs-->
+    <string name="tab_patra">रंग</string>
+    <string name="tab_prarang">संतुलन</string>
+    <string name="tab_gulak">गुल्लक</string>
+    <string name="tab_city_portals">द्वार</string>
+
+    <!--toolbar-->
+    <string name="toolbar_geography">भुगोल चुने</string>
+    <string name="toolbar_changelang">आप प्रोफाइल अनुभाग से बाद मे भाषा बदल सकते हैं</string>
+
+    <!-- Login Activity-->
+    <string name="hint_enternumber">अपना फोन नंबर लिखें</string>
+    <string name="hint_entername">अपना नाम लिखें</string>
+    <string name="hint_enterotp">ओ.टी. पी. दर्ज करें </string>
+    <string name="text_viewhindi">हिन्दी पोस्ट देखें</string>
+    <string name="text_viewenglish">अंग्रेजी पोस्ट देखें</string>
+    <string name="button_enter">प्रवेश करें</string>
+    <string name="text_resend">पुन: भेजें</string>
+    <string name="text_otpdetail">एक छह अंकों का ओ टी पी आपके दिए हुए मोबाइल नंबर पर भेज दिया गया है, कृपया उन अंको को उपर खाने मे दर्ज करें और प्रवेश करें</string>
+
+    <string name="text_menu_changelang">भाषा बदलें</string>
+    <string name="text_menu_aboutus">हमारे बारे में</string>
+    <string name="text_menu_apptour">शैक्षणिक क्रमिका</string>
+
+
+    <string name="text_menu_city_portals">-----द्वार----</string>
+    <string name="text_menu_rampur"> रामपुर </string>
+    <string name="text_menu_meerut"> मेरठ </string>
+    <string name="text_menu_lucknow"> लखनऊ </string>
+    <string name="text_menu_jaunpur"> जौनपुर </string>
+
+
+
+    <string name="cityportal_tab_rampur">रामपुर</string>
+    <string name="cityportal_tab_meerut">मेरठ</string>
+    <string name="cityportal_tab_lucknow">लखनऊ</string>
+    <string name="cityportal_tab_jaunpur">जौनपुर</string>
+
+
+
+    <string name="filter_city">शहर चुनें</string>
+    <string name="filter_region">क्षेत्र चुनें</string>
+    <string name="filter_country">देश चुनें</string>
+
+    <string name="no_city">कोई शहर नहीं</string>
+    <string name="no_region">कोई जनपद नहीं</string>
+    <string name="no_country">कोई देश नहीं</string>
+
+    <!-- SelectLanguage Activity-->
+    <string name="button_ahead">आगे बढ़ें</string>
+    <string name="button_submit">जमा करें</string>
+    <string name="button_dismiss">खारिज करे</string>
+    <string name="checkbox_all">सभी</string>
+
+    <!--Prarang Fragment-->
+    <string name="text_sanskrit">संस्कृती</string>
+    <string name="text_prakrit">प्रकृति</string>
+    <string name="text_s1">समय-सीमा</string>
+    <string name="text_s2">मानव व उसकी इन्द्रियाँ</string>
+    <string name="text_s3">मानव व उसके आविष्कार</string>
+    <string name="text_p1">भूगोल</string>
+    <string name="text_p2">जीव-जन्तु</string>
+    <string name="text_p3">वनस्पति</string>
+
+    <!-- Messages-->
+    <string name="msg_selectLang">कृपया पहले एक भाषा चुनें।</string>
+    <string name="cond_selectothercity">*अन्य शहरों का चयन करें</string>
+
+    <!--Login Messages-->
+    <string name="msg_selectonegeo">कृपया कम से कम एक भूगोल का चयन करें</string>
+    <string name="msg_selectoneviewpost">कृपया पोस्ट देखने में कम से कम एक बार सक्षम करें</string>
+    <string name="msg_alreadyselected">पहले से ही चयनित है कृपया फिर से चुनें।</string>
+
+    // Older
+<!--    <string name="text_citypost">शहर</string>-->
+<!--    <string name="text_regionpost">क्षेत्र</string>-->
+<!--    <string name="text_countrypost">देश</string>-->
+
+    // Newer
+    <string name="text_rampur">रामपुर</string>
+    <string name="text_meerut">मेरठ</string>
+    <string name="text_lucknow">लखनऊ</string>
+    <string name="text_jaunpur">जौनपुर</string>
+
+    <!--Portal Links-->
+
+    <string name="rampur_portal_links">http://prarang.in/rampur</string>
+    <string name="meerut_portal_links">http://prarang.in/meerut</string>
+    <string name="lucknow_portal_links">http://prarang.in/lucknow</string>
+    <string name="jaunpur_portal_links">http://prarang.in/jaunpur</string>
+
+
+    <!--Comments-->
+    <string name="text_addcomment">एक टिप्पणी जोड़ें यहां</string>
+    <string name="text_norecordfound">रिकॉर्ड उपलब्ध नहीं है!</string>
+
+    <!--Common Messages-->
+    <string name="msg_common">कुछ गलत हो गया या नेटवर्क का समय समाप्त हो गया! कृपया अपने इंटरनेट कनेक्शन और सेटिंग्स की जांच करें</string>
+    <string name="more">अधिक</string>
+    <string name="viewmore">और देखो</string>
+    <string name="msg_uniquegeo">कृपया एक अनूठे भूगोल क्षेत्र का चयन करें</string>
+    <string name="msg_networkerror">इन्टरनेट से संपर्क नही हो पा रह है| आपकी संग्रक्षित पत्र गुल्लक मे मौजूद है|</string>
+    <string name="msg_nointernet">कृपया अपना इन्टरनेट संपर्क जांच ले</string>
+    <string name="msg_nochitti">कृपया गुल्लक मे पत्रों को संरक्षित करें</string>
+    <string name="msg_savebank">संरक्षित</string>
+
+    <string name="sharetext_aboutus">भरें अपने ज़िन्दगी को संस्कृति और प्रकृति के रंग से, प्रारंग ऐप को डाउनलोड करने के लिये नीचे दिये लिंक को चुने.</string>
+    <string name="msg_exit">बाहर निकलने के लिए कृपया फिर से दबाएं</string>
+    <string name="msg_noletter">माफ करना, यहां कोई पत्र नहीं, अन्य भूगोल चुनें!</string>
+    <!--tutorial-->
+    <string name="skip">छोड़ें</string>
+    <string name="done">समाप्त</string>
+    <string-array name="tutorial">
+        <item>
+            <title>घर#</title>
+            <content>पढ़ने के लिए किसी भी लेख पर क्लिक करें।</content>
+        </item>
+        <item>
+            <title>भूगोल चुने#</title>
+            <content>अपनी रूचि के शहर, क्षेत्र व देश को चुनें। आप एक या एक से आधिक श्रेणी को चुन सकते हैं। शुरुआत में सभी श्रेणियां चुनी हुई रहती हैं।</content>
+        </item>
+        <item>
+            <title>प्रोफाइल#</title>
+            <content>इस पृष्ठ पर अपने चित्र को बदला जा सकता है, भाषा का चयन किया जा सकता है व पुनः एप्लीकेशन की कार्य प्रणाली को देखा जा सकता है।</content>
+        </item>
+        <item>
+            <title>लेख#</title>
+            <content>किसी भी चित्र को क्लिक करने पर सचित्र लेख खुलता है, जिसे सांझा किया जा सकता है, पसंद किया जा सकता है, टिप्पणी दी जा सकती है और बाद में पढ़ने के लिए संरक्षित भी किया जा सकता है।</content>
+        </item>
+        <item>
+            <title>लेख को सरकाएं#</title>
+            <content>अगले या पिछले लेख पर जाने क लिए दायें या बाएं सरकाएं।</content>
+        </item>
+        <item>
+            <title>संतुलन#</title>
+            <content>यह पृष्ठ दो भागो में विभाजित किया गया है - संस्कृति व प्रकृति, प्रत्येक भाग को तीन-तीन मुख्य भागो में विभाजित किया गया है, जिनको चुनने पर दस-दस उपभाग मिलते हैं। इस प्रकार कुल 60 भाग मौजूद हैं। </content>
+        </item>
+        <item>
+            <title>द्वार#</title>
+            <content>यहाँ से आप प्रारंग के सिटी पोर्टल में प्रवेश कर सकते हैं। शहर के नाम पर क्लिक करके आपके फ़ोन के ब्राउज़र में उसी शहर का पोर्टल आपके सामने खुल जाएगा। पोर्टल की काफी विविध विशेषताएँ हैं, जैसे – शहर का मौसम, खेल, खबर, मनोरंजन, रोज़गार, व्यवसाय आदि।</content>
+        </item>
+        <item>
+            <title>गुल्लक#</title>
+            <content>संरक्षित किया गया पत्र इस पृष्ठ पर पढ़ा व देखा जा सकता है।</content>
+        </item>
+    </string-array>
+    <!--========================================================================================================================-->
+    <!-- AdMob ad unit IDs -->
+    <!--<string name="admob_banner_id">ca-app-pub-3940256099942544/6300978111</string>-->
+
+    <string name="admob_banner_id">ca-app-pub-2564889504860735/6848977603</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="invalid_mobileno">कृपया कोई मान्य मोबाइल नंबर दर्ज करें</string>
+
+    <integer name="btnplusview">1</integer>
+
+
+    <string name="facebook_app_id">1396585230753184</string>
+    <string name="fb_login_protocol_scheme">1396585230753184</string>
+    <string name="facebook_client_token">61353b78afecdd34f56b988ca8837d63</string>
+
+</resources>

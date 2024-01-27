@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:title="Home"
+            android:icon="@drawable/ic_userblank"/>
+        <item
+            android:id="@+id/settings"
+            android:title="Settings"
+            android:icon="@drawable/ic_userblank"/>
+        <item
+            android:id="@+id/trash"
+            android:title="Trash"
+            android:icon="@drawable/ic_userblank"/>
+        <item
+            android:id="@+id/logout"
+            android:title="Logout"
+            android:icon="@drawable/ic_userblank"/>
+    </group>
+
+    <item android:title="City Portals">
+        <menu>
+            <item
+                android:id="@+id/nav_rampur"
+                android:title="Rampurt"/>
+
+
+            <item
+                android:id="@+id/nav_meerut"
+                android:title="Meerut"/>
+
+
+            <item
+                android:id="@+id/nav_lucknow"
+                android:title="Lucknow"
+                />
+
+            <item
+                android:id="@+id/nav_Jaunpur"
+                android:title="Jaunpur"/>
+
+
+
+        </menu>
+
+    </item>
+</menu>

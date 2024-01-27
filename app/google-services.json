@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "564468030239",
+    "firebase_url": "https://river-sanskiriti.firebaseio.com",
+    "project_id": "river-sanskiriti",
+    "storage_bucket": "river-sanskiriti.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564468030239:android:2cd9e695629408fb",
+        "android_client_info": {
+          "package_name": "com.riversanskiriti.prarang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "564468030239-mjh61fce7u48k4uhho6n161n1gcpv00q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoj0sq8dg1IywaAw8qaDh32muWE2S4IHI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
