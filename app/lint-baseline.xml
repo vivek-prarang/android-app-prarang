@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.2.2" type="baseline" client="gradle" dependencies="false" name="AGP (8.2.2)" variant="fatal" version="8.2.2">
+
+    <issue
+        id="UnknownId"
+        message="The id &quot;`adView`&quot; is not defined anywhere."
+        errorLine1="        android:layout_above=&quot;@+id/adView&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_post.xml"
+            line="33"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="InvalidSetHasFixedSize"
+        message="When using `setHasFixedSize() in an `RecyclerView`, `wrap_content` cannot be used as \&#xA;a value for `size` in the scrolling direction."
+        errorLine1="            recyclerView.setHasFixedSize(true);"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/riversanskiriti/prarang/adapter/MainPostAdapter.java"
+            line="88"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnspecifiedImmutableFlag"
+        message="Missing `PendingIntent` mutability flag"
+        errorLine1="                        PendingIntent.FLAG_CANCEL_CURRENT"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/riversanskiriti/prarang/fcm/NotificationUtils.java"
+            line="67"
+            column="25"/>
+    </issue>
+
+</issues>

@@ -4,36 +4,38 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import com.google.firebase.iid.FirebaseInstanceIdService;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
-/**
- * Created by ARPIT on 14-03-2017.
- */
-
-public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
+public class MyFirebaseInstanceIDService extends FirebaseMessagingService {
     private static final String TAG = MyFirebaseInstanceIDService.class.getSimpleName();
 
     @Override
-    public void onTokenRefresh() {
-        super.onTokenRefresh();
-        String refreshedToken = FirebaseMessaging.getInstance().getToken().toString();
+    public void onNewToken(@NonNull String token) {
+        super.onNewToken(token);
 
         // Saving reg id to shared preferences
-        storeRegIdInPref(refreshedToken);
+        storeRegIdInPref(token);
 
         // sending reg id to your server
-        sendRegistrationToServer(refreshedToken);
+        sendRegistrationToServer(token);
 
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(Config.REGISTRATION_COMPLETE);
-        registrationComplete.putExtra("token", refreshedToken);
+        registrationComplete.putExtra("token", token);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
+    @Override
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        // Handle incoming messages here
+    }
+
     private void sendRegistrationToServer(final String token) {
-        // sending gcm token to server
+        // Sending the FCM token to the server
         Log.e(TAG, "sendRegistrationToServer: " + token);
     }
 
@@ -41,6 +43,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("FirebaseToken", token);
-        editor.commit();
+        editor.apply();
     }
 }

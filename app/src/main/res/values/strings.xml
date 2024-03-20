@@ -25,7 +25,7 @@
 
     <!-- Login Activity-->
     <string name="hint_enternumber">Enter your contact number</string>
-    <string name="hint_entername">Write your name </string>
+    <string name="hint_entername">Name</string>
     <string name="hint_enterotp">Enter O.T.P</string>
     <string name="text_viewhindi">See posts in hindi</string>
     <string name="text_viewenglish">See posts in english</string>
@@ -67,7 +67,8 @@
 
     <!-- Messages-->
     <string name="msg_selectLang">Please select a language first.</string>
-    <string name="cond_selectothercity">*Select other cities.</string>
+    <string name="cond_selectothercity">Select city name:</string>
+    <string name="cond_select_country_name">Select country name:</string>
 
     <!--Login Messages-->
     <string name="msg_selectonegeo">Please select at least one Geography</string>

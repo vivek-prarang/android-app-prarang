@@ -2,11 +2,14 @@
 
 package com.riversanskiriti.prarang.activity;
 
+import static com.android.volley.BuildConfig.*;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -318,10 +321,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         loadActivity();
 
-        if (!appUtils.isFirstLaunch()) {
+    /*    if (!appUtils.isFirstLaunch()) {
             appUtils.setFirstLaunch(true);
             startActivity(new Intent(this, AppTourActivity.class));
-        }
+        }*/
     }
 
 //    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -521,6 +524,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onNetworkSuccess(String response, String url) {
+        String currentVersion = getAppVersionName();
         if (url.contains(UrlConfig.playStoreURL)) {
             if (response != null) {
                 String key = "softwareVersion";
@@ -529,7 +533,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     index = index + key.length() + 2;
                     String newVersion = response.substring(index, index + 8);
                     newVersion = newVersion.trim();
-                    int status = baseUtils.compareVersionNames(BuildConfig.VERSION_NAME, newVersion);
+                    int status = baseUtils.compareVersionNames(currentVersion, newVersion);
                     if (status != 0) {
                         AlertDialog.Builder builder =
                                 new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
@@ -589,6 +593,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             loadAllData();
         }
     }
+
+    private String getAppVersionName() {
+        try {
+            PackageManager packageManager = getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
+            return packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "1.0.0";
+        }
+    }
+
 
     @Override
     public void onNetworkError(String error, String url) {
@@ -668,11 +684,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.editProfileButton:
-                if (permission.chckSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    permission.setRequestCode(1001);
-                    permission.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    String[] permissionsToCheck = {Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_MEDIA_IMAGES};
+                    if (!permission.checkSelfPermissionMultiple(permissionsToCheck)) {
+                        permission.setRequestCode(1001);
+                        permission.requestPermissionMultiple(permissionsToCheck, null);
+                    } else {
+                        openGallery();
+                    }
                 } else {
-                    openGallery();
+                    if (!permission.chckSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        permission.setRequestCode(1001);
+                        permission.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, null);
+                    } else {
+                        openGallery();
+                    }
                 }
                 break;
         }
@@ -717,7 +743,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         geographyid = geoIds;
         HashMap<String, String> map = new HashMap();
         map.put("name", appUtils.getName());
-        map.put("mobile", appUtils.getNumber());
+        map.put("mobile", "+91");
         map.put("gcmKey", appUtils.getFirebaseToken());
         map.put("languageCode", new Lang(this).getAppLanguage());
         map.put("otpToBeSend", "0");
@@ -764,10 +790,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //If permission is granted
         if (grantResults.length > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (requestCode == 1001) {
-                    openGallery();
+            boolean allPermissionsGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false;
+                    break;
                 }
+            }
+            if (allPermissionsGranted && !permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                openGallery();
             }
         }
     }

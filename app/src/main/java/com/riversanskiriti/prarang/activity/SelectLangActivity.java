@@ -1,5 +1,6 @@
 package com.riversanskiriti.prarang.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,22 +25,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class SelectLangActivity extends AppCompatActivity implements LangAdapter.Listener, View.OnClickListener, Lang.Listener, Network.Listener {
 
-    private Toolbar toolbar;
-    private RecyclerView recyclerView;
     TextView toolbarTitle, toolbarSubTitle;
     private LangAdapter langAdapter;
-    private List<LangItem> list = new ArrayList<>();
-    private Button submitButton;
+    private final List<LangItem> list = new ArrayList<>();
     private boolean isChangeLanguage = false;
     private Lang lang;
 
     private void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
 
         toolbarTitle = (TextView) findViewById(R.id.toolbarTitle);
         toolbarSubTitle = (TextView) findViewById(R.id.toolbarSubTitle);
@@ -51,9 +50,10 @@ public class SelectLangActivity extends AppCompatActivity implements LangAdapter
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void intiRecyclerView() {
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -85,7 +85,7 @@ public class SelectLangActivity extends AppCompatActivity implements LangAdapter
         initToolbar();
         intiRecyclerView();
 
-        submitButton = (Button) findViewById(R.id.submitButton);
+        Button submitButton = findViewById(R.id.submitButton);
         submitButton.setOnClickListener(this);
     }
 
@@ -97,6 +97,7 @@ public class SelectLangActivity extends AppCompatActivity implements LangAdapter
         loadActivity();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onClickLanguageView(View v, int postion) {
         for (int i = 0; i < list.size(); i++) {
@@ -113,22 +114,19 @@ public class SelectLangActivity extends AppCompatActivity implements LangAdapter
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.submitButton:
-                int position = 1000;
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).isChecked()) {
-                        position = i;
-                        break;
-                    }
+        if (v.getId() == R.id.submitButton) {
+            int position = 1000;
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).isChecked()) {
+                    position = i;
+                    break;
                 }
-                if (position != 1000) {
-                    lang.setAppLanguage(list.get(position).getAbbLocal());
-                } else {
-                    Toast.makeText(this, getResources().getString(R.string.msg_selectLang), Toast.LENGTH_SHORT).show();
-                }
-                break;
-
+            }
+            if (position != 1000) {
+                lang.setAppLanguage(list.get(position).getAbbLocal());
+            } else {
+                Toast.makeText(this, getResources().getString(R.string.msg_selectLang), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

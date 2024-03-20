@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -168,7 +169,14 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //If permission is granted
         if (grantResults.length > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            boolean allPermissionsGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false;
+                    break;
+                }
+            }
+            if (allPermissionsGranted) {
                 openGallery();
             }
         }
@@ -249,10 +257,21 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 attachedImageBytes = null;
                 break;
             case R.id.attachView:
-                if (!permission.chckSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    permission.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    String[] permissionsToCheck = {Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_MEDIA_IMAGES};
+                    if (!permission.checkSelfPermissionMultiple(permissionsToCheck)) {
+                        permission.setRequestCode(1001);
+                        permission.requestPermissionMultiple(permissionsToCheck, null);
+                    } else {
+                        openGallery();
+                    }
                 } else {
-                    openGallery();
+                    if (!permission.chckSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        permission.setRequestCode(1001);
+                        permission.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, null);
+                    } else {
+                        openGallery();
+                    }
                 }
                 break;
         }

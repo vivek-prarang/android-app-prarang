@@ -3,7 +3,9 @@ package com.riversanskiriti.prarang.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -90,6 +92,7 @@ public class PostActivity extends AppCompatActivity implements PostAdapter.Liste
             return;
         }
         if (!isLoading) {
+            Log.d("adddata", "loading :");
             isLoading = true;
             PostItem loadingPost = new PostItem();
             loadingPost.setType(1);
@@ -172,13 +175,14 @@ public class PostActivity extends AppCompatActivity implements PostAdapter.Liste
         recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
+                Log.d("adddata", "onLoadMore :" +current_page);
+
                 addLoading();
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView1, int dx, int dy) {
                 super.onScrolled(recyclerView1, dx, dy);
-
                 // Code Added by Pawan on 11 April 22
                 currentPosition = ((LinearLayoutManager) Objects.requireNonNull(recyclerView.getLayoutManager())).findFirstCompletelyVisibleItemPosition();
                 String nameArg = getIntent().getExtras().getString("value");  // Code Added by Munendra on 13 May 22
@@ -257,10 +261,19 @@ public class PostActivity extends AppCompatActivity implements PostAdapter.Liste
                 shareHolder = holder;
                 sharePosition = position;
                 Permission permission = new Permission(this);
-                if (permission.chckSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    baseUtils.sharePost(holder.postImageView, list.get(position).getPostUrl(),list.get(position).getGeoCode(),list.get(position).getId());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    String[] permissionsToCheck = {Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_MEDIA_IMAGES};
+                    if (permission.checkSelfPermissionMultiple(permissionsToCheck)) {
+                        baseUtils.sharePost(holder.postImageView, list.get(position).getPostUrl(), list.get(position).getGeoCode(), list.get(position).getId());
+                    } else {
+                        permission.requestPermissionMultiple(permissionsToCheck, null);
+                    }
                 } else {
-                    permission.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, null);
+                    if (permission.chckSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        baseUtils.sharePost(holder.postImageView, list.get(position).getPostUrl(), list.get(position).getGeoCode(), list.get(position).getId());
+                    } else {
+                        permission.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, null);
+                    }
                 }
                 break;
             case R.id.likeButtonView:
@@ -351,8 +364,16 @@ public class PostActivity extends AppCompatActivity implements PostAdapter.Liste
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                baseUtils.sharePost(shareHolder.postImageView, list.get(sharePosition).getPostUrl(),list.get(sharePosition).getGeoCode(),list.get(sharePosition).getId());
+            boolean allPermissionsGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false;
+                    break;
+                }
+            }
+
+            if (allPermissionsGranted) {
+                baseUtils.sharePost(shareHolder.postImageView, list.get(sharePosition).getPostUrl(), list.get(sharePosition).getGeoCode(), list.get(sharePosition).getId());
             }
         }
     }
@@ -404,20 +425,20 @@ public class PostActivity extends AppCompatActivity implements PostAdapter.Liste
                 JSONObject json = new JSONObject(response);
                 if (json.getString("responseCode").equals("1")) {
                     JSONArray array = json.getJSONArray("Payload");
-                    json = array.getJSONObject(0);
-                    JSONArray imageArray = json.getJSONArray("image");
-                    JSONArray tagArray = json.getJSONArray("tags");
+                    JSONObject data = array.getJSONObject(0);
+                    JSONArray imageArray = data.getJSONArray("image");
+                    JSONArray tagArray = data.getJSONArray("tags");
                     PostItem item = new PostItem();
-                    item.setName(json.getString("chittiname"));
-                    item.setId(json.getString("chittiId"));
-                    item.setDescription(json.getString("description"));
-                    item.setLiked(json.getString("isLiked"));
-                    item.setTotalLike(json.getInt("totalLike"));
-                    item.setTotalComment(json.getInt("totalComment"));
+                     item.setName(data.getString("Title"));
+                    item.setId(data.getString("chittiId"));
+                    item.setDescription(data.getString("description"));
+                    item.setLiked(data.getString("isLiked"));
+                    item.setTotalLike(data.getInt("totalLike"));
+                    item.setTotalComment(data.getInt("totalComment"));
                     if (json.has("url")) {
-                        item.setPostUrl(json.getString("url"));
+                        item.setPostUrl(data.getString("url"));
                     }
-                    item.setDateTime(json.getString("dateOfApprove"));
+                    item.setDateTime(data.getString("dateOfApprove"));
                     item.setImageList(imageArray);
                     item.setTagList(tagArray);
                     item.setSaved(checkSavedItem(item));
@@ -427,7 +448,7 @@ public class PostActivity extends AppCompatActivity implements PostAdapter.Liste
                     Toast.makeText(this, json.getString("message"), Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception ee) {
-
+                ee.printStackTrace();
             }
             removeLoading();
             return;
@@ -438,22 +459,25 @@ public class PostActivity extends AppCompatActivity implements PostAdapter.Liste
                 removeLoading();
                 JSONArray array = json.getJSONArray("Payload");
                 for (int i = 0; i < array.length(); i++) {
-                    json = array.getJSONObject(i);
-                    if (json.has("tags") && json.has("image")) {
-                        JSONArray imageArray = json.getJSONArray("image");
-                        JSONArray tagArray = json.getJSONArray("tags");
+                    JSONObject data = array.getJSONObject(i);
+                    if (data.has("tags") && data.has("image")) {
+                        JSONArray imageArray = data.getJSONArray("image");
+                        JSONArray tagArray = data.getJSONArray("tags");
                         PostItem item = new PostItem();
-                        item.setName(json.getString("chittiname"));
-                        item.setId(json.getString("chittiId"));
-                        item.setDescription(json.getString("description"));
-                        item.setLiked(json.getString("isLiked"));
-                        item.setTotalLike(json.getInt("totalLike"));
-                        item.setTotalComment(json.getInt("totalComment"));
-                        item.setPostUrl(json.getString("url"));
-                        item.setDateTime(json.getString("dateOfApprove"));
+                        String chittiName = data.getString("Title");
+                        item.setName(chittiName);
+                        item.setId(data.getString("chittiId"));
+                        item.setDescription(data.getString("description"));
+                        item.setLiked(data.getString("isLiked"));
+                        item.setTotalLike(data.getInt("totalLike"));
+                        item.setTotalComment(data.getInt("totalComment"));
+                        item.setPostUrl(data.getString("url"));
+                        item.setDateTime(data.getString("dateOfApprove"));
                         item.setImageList(imageArray);
                         item.setTagList(tagArray);
+                        Log.d("adddata","item is "+item);
                         list.add(item);
+                        Log.d("adddata","list size is "+list.size());
                         postAdapter.notifyItemInserted(list.size());
                     }
                 }
@@ -465,6 +489,7 @@ public class PostActivity extends AppCompatActivity implements PostAdapter.Liste
             removeLoading();
         }
     }
+
 
     @Override
     public void onNetworkError(String error, String url) {
