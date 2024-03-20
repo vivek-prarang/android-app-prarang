@@ -13,20 +13,12 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true  //added by sumit
     }
-    signingConfigs {
-        release {
-            storeFile file('C:\\Users\\vipin\\Desktop\\Vipin\\PRARANG_KEYSTORE.jks')
-            storePassword('prarang@2017')
-            keyAlias 'PRARANG'
-            keyPassword 'prarang@2017'
-        }
-    }
+
     buildTypes {
         release {
             debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
         debug {
             debuggable true
