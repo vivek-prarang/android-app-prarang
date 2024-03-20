@@ -94,11 +94,12 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //        list.get(position).setImageUrl("https://youtu.be/YH5f8sna1ug");
 //            list.get(position).setImageUrl("https://img.youtube.com/vi/YH5f8sna1ug/0.jpg");
 
-        if (list.get(position).isVideoUrl()) {
+/*        if (list.get(position).isVideoUrl()) {
+            Log.d("adddata"," here for video");
             holder.youtubeViewWebView.loadData(list.get(position).getVideoIframe(), mimeTypeWebView, encodingWebView);
             holder.youtubeViewWebView.setVisibility(View.VISIBLE);
             holder.imageFrameLayout.setVisibility(View.GONE);
-        } else {
+        } else {*/
             Glide.with(mContext).load(list.get(position).getImageUrl()).crossFade().thumbnail(0.1f).listener(new RequestListener<String, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -112,7 +113,9 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     return false;
                 }
             }).into(holder.postImageView);
-        }
+/*
+       }
+*/
 
 
 //        String str = "<iframe width=\"100%\" src=\"https://youtu.be/YH5f8sna1ug\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen=\"allowfullscreen\"></iframe>";
@@ -285,7 +288,7 @@ public class PostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //            messageTextView.setOnClickListener(this);
 
             alertDialog = new AlertDialog.Builder(mContext).create();
-            alertDialog.setTitle(mContext.getResources().getString(R.string.tab_prarang));
+            alertDialog.setTitle(mContext.getResources().getString(R.string.tab_gulak));
             alertDialog.setMessage(mContext.getResources().getString(R.string.msg_savebank));
             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {

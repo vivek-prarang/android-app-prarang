@@ -9,26 +9,14 @@ import android.util.Log;
 
 import com.riversanskiriti.prarang.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,15 +41,11 @@ public class Multipart {
 
     private int timeout = 30 * 1000;
 
-    //Check Network Avaiblity
+    // Check Network Availability
     private boolean isNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        }
-        return false;
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     public boolean isShowProgress() {
@@ -100,10 +84,6 @@ public class Multipart {
     public void setMap(HashMap<String, String> map) {
     }
 
-//    public void setMap(JSONObject map) {
-//        this.map = map;
-//    }
-
     private class MultiTask extends AsyncTask<String, Integer, String> {
         private ProgressDialog pd;
 
@@ -122,31 +102,54 @@ public class Multipart {
         protected String doInBackground(String... params) {
             String result = null;
             try {
-                HttpParams httpParameters = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParameters, timeout);
+                URL url = new URL(Multipart.this.url);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setConnectTimeout(timeout);
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setDoInput(true);
 
-                HttpClient httpClient = new DefaultHttpClient(httpParameters);
-                HttpPost postRequest = new HttpPost(url);
-                ByteArrayBody bab = new ByteArrayBody(getBytes(), "comment.jpg");
+                // Set the Content-Type header for multipart/form-data
+                String boundary = "---------------------------boundary";
+                connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
-                MultipartEntity reqEntity = new MultipartEntity(
-                        HttpMultipartMode.BROWSER_COMPATIBLE, null, Charset.forName("UTF-8"));
-                reqEntity.addPart(attachedKey, bab);
-                for (Map.Entry<String, String> item : map.entrySet()) {
-                    reqEntity.addPart(item.getKey(), new StringBody(item.getValue().toString(), Charset.forName(HTTP.UTF_8)));
+                OutputStream outputStream = connection.getOutputStream();
+                DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+
+                // Add the file part
+                dataOutputStream.writeBytes("--" + boundary + "\r\n");
+                dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + attachedKey + "\"; filename=\"comment.jpg\"\r\n");
+                dataOutputStream.writeBytes("Content-Type: application/octet-stream\r\n\r\n");
+                dataOutputStream.write(bytes);
+                dataOutputStream.writeBytes("\r\n");
+
+                // Add the other form fields
+                for (Map.Entry<String, String> entry : map.entrySet()) {
+                    dataOutputStream.writeBytes("--" + boundary + "\r\n");
+                    dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + entry.getKey() + "\"\r\n\r\n");
+                    dataOutputStream.writeBytes(entry.getValue() + "\r\n");
                 }
-                postRequest.setEntity(reqEntity);
-                HttpResponse response = httpClient.execute(postRequest);
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(
-                        response.getEntity().getContent()));
+                // End of multipart/form-data
+                dataOutputStream.writeBytes("--" + boundary + "--\r\n");
+                dataOutputStream.flush();
+                dataOutputStream.close();
 
-                String sResponse;
-                StringBuilder s = new StringBuilder();
-                while ((sResponse = reader.readLine()) != null) {
-                    s = s.append(sResponse);
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+                    result = response.toString();
+                    reader.close();
+                } else {
+                    result = "network";
                 }
-                result = s.toString();
+
+                connection.disconnect();
             } catch (Exception e) {
                 result = "network";
                 Log.e("Multipart Exception", e.getMessage());
@@ -169,13 +172,13 @@ public class Multipart {
                 pd.dismiss();
             }
             if (response == null || response.equalsIgnoreCase("network")) {
-                if(response != null){
+                if (response != null) {
                     response = context.getResources().getString(R.string.msg_nointernet);
                 }
                 listener.onMultipartError(response, url);
             } else {
                 try {
-                    response = URLDecoder.decode(URLEncoder.encode(response, "iso8859-1"), "UTF-8");
+                    response = URLEncoder.encode(response, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -189,11 +192,10 @@ public class Multipart {
     }
 
     public interface Listener {
-        public void onMultipartSuccess(String response, String url);
+        void onMultipartSuccess(String response, String url);
 
-        public void onMultipartProgress(int progress);
+        void onMultipartProgress(int progress);
 
-        public void onMultipartError(String error, String url);
+        void onMultipartError(String error, String url);
     }
 }
-

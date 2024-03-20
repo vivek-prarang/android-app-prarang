@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -62,6 +63,10 @@ public class TagPostListFragment extends Fragment implements PostAdapter.Listene
     private List<PostItem> list;
     private DbHandler db;
     private Network network;
+    String UserCity;
+    private AppUtils appUtils;
+
+
 
     public TagPostListFragment() {
     }
@@ -79,6 +84,8 @@ public class TagPostListFragment extends Fragment implements PostAdapter.Listene
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         item = (TagItem) bundle.getSerializable("item");
+        appUtils = new AppUtils(getContext());
+        UserCity = AppUtils.getInstance(getContext()).getGeographyId().substring( 0, AppUtils.getInstance(getContext()).getGeographyId().indexOf(","));
 
     }
 
@@ -136,10 +143,19 @@ public class TagPostListFragment extends Fragment implements PostAdapter.Listene
                 shareHolder = holder;
                 sharePosition = position;
                 Permission permission = new Permission(getContext());
-                if (permission.chckSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    baseUtils.sharePost(holder.postImageView, list.get(position).getPostUrl(),list.get(position).getGeoCode(),list.get(position).getId());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    String[] permissionsToCheck = {Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_MEDIA_IMAGES};
+                    if (permission.checkSelfPermissionMultiple(permissionsToCheck)) {
+                        baseUtils.sharePost(holder.postImageView, list.get(position).getPostUrl(), list.get(position).getGeoCode(), list.get(position).getId());
+                    } else {
+                        permission.requestPermissionMultiple(permissionsToCheck, null);
+                    }
                 } else {
-                    permission.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, this);
+                    if (permission.chckSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        baseUtils.sharePost(holder.postImageView, list.get(position).getPostUrl(), list.get(position).getGeoCode(), list.get(position).getId());
+                    } else {
+                        permission.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, null);
+                    }
                 }
                 break;
             case R.id.likeButtonView:
@@ -179,10 +195,12 @@ public class TagPostListFragment extends Fragment implements PostAdapter.Listene
                     db.deleteFromGulak(list.get(position).getId());
                     list.get(position).setSaved(false);
                     holder.gulakImageView.setImageResource(R.drawable.ic_sanrakhit_karey);
+                    savetoBank("0",position);
                 } else {
                     db.saveIntoGulak(list.get(position));
                     list.get(position).setSaved(true);
                     holder.gulakImageView.setImageResource(R.drawable.ic_sanrakhit_karey_blue);
+                    savetoBank("1",position);
                 }
                 baseUtils.vibrate();
                 break;
@@ -203,12 +221,32 @@ public class TagPostListFragment extends Fragment implements PostAdapter.Listene
         //postAdapter.notifyDataSetChanged();
     }
 
+    private void savetoBank(String isSaved,int position) {
+        HashMap<String, String> map2 = new HashMap<>();
+        map2.put("subscriberId", appUtils.getSubscriberId());
+        map2.put("geographyCode",list.get(position).getGeoCode());
+        map2.put("chittiId", list.get(position).getId());
+        map2.put("userCity", UserCity);
+        map2.put("isSave", isSaved);
+        network.makeRequest(map2, UrlConfig.saveBankUrl);
+        Log.d("saveBankMaps--",map2.toString());
+
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                baseUtils.sharePost(shareHolder.postImageView, list.get(sharePosition).getPostUrl(),list.get(sharePosition).getGeoCode(),list.get(sharePosition).getId());
+            boolean allPermissionsGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false;
+                    break;
+                }
+            }
+
+            if (allPermissionsGranted) {
+                baseUtils.sharePost(shareHolder.postImageView, list.get(sharePosition).getPostUrl(), list.get(sharePosition).getGeoCode(), list.get(sharePosition).getId());
             }
         }
     }
@@ -252,7 +290,7 @@ public class TagPostListFragment extends Fragment implements PostAdapter.Listene
                 Toast.makeText(getContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
-            Toast.makeText(getContext(), e.getMessage() + " " + getContext().getResources().getString(R.string.msg_common), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getContext(), e.getMessage() + " " + getContext().getResources().getString(R.string.msg_common), Toast.LENGTH_SHORT).show();
         }
     }
 

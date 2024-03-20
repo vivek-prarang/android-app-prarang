@@ -80,7 +80,7 @@ public class Network {
 
     private void onNetworkSuccess(String response, String url) {
         if (isShowProgress()) {
-            if (pd != null) {
+            if (pd != null && pd.isShowing()) {
                 pd.dismiss();
             }
         }
@@ -95,7 +95,7 @@ public class Network {
 
     private void onNetworkError(String error, String url) {
         if (isShowProgress()) {
-            if (pd != null) {
+            if (pd != null && pd.isShowing()) {
                 pd.dismiss();
             }
         }
@@ -111,7 +111,7 @@ public class Network {
     private void onNetworkProgress() {
         if (isShowProgress()) {
             pd = new ProgressDialog(context);
-            pd.setMessage("Loading..");
+            pd.setMessage("Loading...");
             pd.setCancelable(false);
             pd.show();
         }

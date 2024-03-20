@@ -2,6 +2,7 @@ package com.riversanskiriti.prarang.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,9 +84,17 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.shareButtonView:
-                if (!permission.chckSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    permission.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, null);
-                    return;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    String[] permissionsToCheck = {Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.READ_MEDIA_IMAGES};
+                    if (!permission.checkSelfPermissionMultiple(permissionsToCheck)) {
+                        permission.requestPermissionMultiple(permissionsToCheck, null);
+                        return;
+                    }
+                } else {
+                    if (!permission.chckSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        permission.requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, null);
+                        return;
+                    }
                 }
                 baseUtils.shareApp(getResources().getString(R.string.sharetext_aboutus));
                 break;
@@ -99,7 +108,14 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            boolean allPermissionsGranted = true;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false;
+                    break;
+                }
+            }
+            if (allPermissionsGranted) {
                 baseUtils.shareApp(getResources().getString(R.string.sharetext_aboutus));
             }
         }

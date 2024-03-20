@@ -27,9 +27,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.riversanskiriti.prarang.AppController;
+//import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.messaging.FirebaseMessaging;
+//import com.riversanskiriti.prarang.AppController;
 import com.riversanskiriti.prarang.AppUtils;
 import com.riversanskiriti.prarang.R;
 import com.riversanskiriti.prarang.StaticClass;
@@ -50,12 +50,13 @@ import java.util.Objects;
 //import com.google.android.gms.ads.AdListener;
 //import com.google.android.gms.ads.AdRequest;
 //import com.google.android.gms.ads.AdView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, Network.Listener {
 
     private Toolbar toolbar;
     //    private AdView mAdView;
-    private TextView countryCode, timerText;
+    private TextView cityName;
     private LinearLayout spinnerLayout;
     private EditText name, number, otp;
     private Button submit, submitOTP;
@@ -110,7 +111,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    spinnerView2.setVisibility(View.GONE);
+                    cityName.setVisibility(View.GONE);
+                    spinnerLayout.setVisibility(View.GONE);
                     return;
                 }
                 l3.clear();
@@ -133,7 +135,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 da2 = new ArrayAdapter<String>(LoginActivity.this, android.R.layout.simple_spinner_item, l3);
                 da2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner2.setAdapter(da2);
-                spinnerView2.setVisibility(View.VISIBLE);
+                cityName.setVisibility(View.VISIBLE);
+                spinnerLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -147,12 +150,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void load() {
-        countryCode = (TextView) findViewById(R.id.countryCode);
-        timerText = (TextView) findViewById(R.id.timerText);
-        spinnerLayout = (LinearLayout) findViewById(R.id.spinnerLayout);
+        cityName = (TextView) findViewById(R.id.cityName);
+        spinnerLayout = (LinearLayout) findViewById(R.id.spinnerLayout2);
 
         name = (EditText) findViewById(R.id.name);
-        number = (EditText) findViewById(R.id.number);
         otp = (EditText) findViewById(R.id.otp);
 
         submit = (Button) findViewById(R.id.submitButton);
@@ -160,14 +161,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         otpFrame = (FrameLayout) findViewById(R.id.otpFrame);
         loginFrame = (FrameLayout) findViewById(R.id.loginFrame);
+        number = findViewById(R.id.phoneNumber);
 
         initToolbar();
 //        initAdmobBanner();
         initSpinner();
 
         submit.setOnClickListener(this);
-        submitOTP.setOnClickListener(this);
-        timerText.setOnClickListener(this);
+        //submitOTP.setOnClickListener(this);
+        // timerText.setOnClickListener(this);
 
         //countryCode.setText("+" + baseUtils.getCountryZipCode(null));
     }
@@ -242,7 +244,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         return super.onOptionsItemSelected(item);
     }
-
+/*
     boolean finishCounter = false;
     private CountDownTimer countDownTimer = new CountDownTimer(60 * 1000, 1000) {
         public void onTick(long millisUntilFinished) {
@@ -258,7 +260,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             finishCounter = true;
             timerText.setText(getResources().getString(R.string.text_resend));
         }
-    };
+    };*/
 
 
     private void onClickSubmitButton() {
@@ -289,20 +291,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String geographyname = l3.get(spinner2.getSelectedItemPosition()) + "," + l1.get(spinner1.getSelectedItemPosition());
 
         appUtils.setName(name.getText().toString());
-        appUtils.setNumber(countryCode.getText().toString() + "" + number.getText().toString());
+        appUtils.setNumber("+91" + "" + number.getText().toString().trim());
         appUtils.setGeographyId(geographyid);
         appUtils.setGeographyName(geographyname);
 
 //        Log.i("GCMKEY", FirebaseMessaging.getInstance().getToken().toString());
 //        Log.i("GCMKEY1", FirebaseInstanceId.getInstance().getToken().toString());
 
-        String gcmkey = FirebaseInstanceId.getInstance().getToken().toString();
+        String gcmkey = String.valueOf(FirebaseMessaging.getInstance().getToken());;
         appUtils.setFirebaseToken(gcmkey);
 
         network.setShowProgress(true);
         HashMap<String, String> map = new HashMap();
         map.put("name", name.getText().toString());
-        map.put("mobile", countryCode.getText().toString() + "" + number.getText().toString());
+        map.put("mobile", appUtils.getNumber());
         map.put("userLocation", geographyid);
         map.put("languageCode", new Lang(this).getAppLanguage());
         map.put("gcmKey", appUtils.getFirebaseToken());
@@ -314,7 +316,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        Log.i("GCMKEY2", appUtils.getFirebaseToken());
 
         network.makeRequest(map, UrlConfig.login);
-        registerReceiver(smsBroadcastReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
+        // registerReceiver(smsBroadcastReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
     }
 
     @Override
@@ -323,42 +325,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.submitButton:
                 onClickSubmitButton();
                 break;
-            case R.id.submitOTP:
-                try {
-                    String payloadCode = payloadJson.getString("otp");
-                    Toast.makeText(this, payloadCode, Toast.LENGTH_SHORT).show();
+            /*case R.id.submitOTP:
 
-                    Log.i("","Enter OTP = " + otp.getText().toString());
-                    Log.i("","BackEnd OTP = " + payloadCode);
-
-
-                    if (otp.getText().toString().equals(payloadCode)) {
-                        countDownTimer.cancel();
-                        appUtils.setSubscriberId(payloadJson.getString("subscriberId"));
-                        appUtils.setProfileUrl(payloadJson.getString("profilePicUrl"));
-
-                        StaticClass.subsId = appUtils.getSubscriberId();
-                        StaticClass.userCity = appUtils.getGeographyId().substring( 0, appUtils.getGeographyId().indexOf(","));
-
-                        // code added by Pawan
-                        callAppUsage(appUtils.getSubscriberId(),"Start", appUtils.getGeographyId().substring( 0, appUtils.getGeographyId().indexOf(",")));
-
-                        Intent intent = new Intent(this, HomeActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        otp.setError(Html
-                                .fromHtml("<font color='red'>Invalid</font>"));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 break;
             case R.id.timerText:
                 if (finishCounter) {
                     onClickSubmitButton();
                 }
-                break;
+                break;*/
         }
     }
 
@@ -395,14 +369,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-        loginFrame.setClickable(true);
-        if (otpFrame.getVisibility() == View.VISIBLE) {
-            otpFrame.setClickable(false);
-            otpFrame.setVisibility(View.GONE);
-            countDownTimer.cancel();
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     @Override
@@ -410,18 +377,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onDestroy();
         try {
             network.cancelRequest();
-            unregisterReceiver(smsBroadcastReceiver);
+            //unregisterReceiver(smsBroadcastReceiver);
         } catch (Exception ee) {
 
         }
     }
 
-    private void openOTPScreen() {
+/*    private void openOTPScreen() {
         countDownTimer.start();
         loginFrame.setClickable(false);
         otpFrame.setClickable(true);
         otpFrame.setVisibility(View.VISIBLE);
-    }
+    }*/
 
     @Override
     public void onNetworkSuccess(String response, String url) {
@@ -456,8 +423,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             baseUtils.setStringData("cityFilter", commaseparatedlist);
                         }
                     }
+                    try {
+                        // String payloadCode = payloadJson.getString("otp");
+                        // Toast.makeText(this, payloadCode, Toast.LENGTH_SHORT).show();
 
-                    openOTPScreen();
+                        // Log.i("","Enter OTP = " + otp.getText().toString());
+                        //  Log.i("","BackEnd OTP = " + payloadCode);
+
+
+/*
+                    if (otp.getText().toString().equals(payloadCode)) {
+*/
+                        appUtils.setSubscriberId(payloadJson.getString("subscriberId"));
+                        appUtils.setProfileUrl(payloadJson.getString("profilePicUrl"));
+
+                        StaticClass.subsId = appUtils.getSubscriberId();
+                        StaticClass.userCity = appUtils.getGeographyId().substring( 0, appUtils.getGeographyId().indexOf(","));
+
+                        // code added by Pawan
+                        callAppUsage(appUtils.getSubscriberId(),"Start", appUtils.getGeographyId().substring( 0, appUtils.getGeographyId().indexOf(",")));
+
+                        Intent intent = new Intent(this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                        /*}*/
+                    } catch (
+                            JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 } else {
                     Toast.makeText(this, jsonObject.optString("message"), Toast.LENGTH_SHORT).show();
                 }

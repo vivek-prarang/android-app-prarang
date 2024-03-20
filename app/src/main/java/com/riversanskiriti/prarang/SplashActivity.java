@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.android.installreferrer.BuildConfig;
 import com.riversanskiriti.prarang.activity.HomeActivity;
 import com.riversanskiriti.prarang.activity.PostActivity;
 import com.riversanskiriti.prarang.activity.SelectLangActivity;
@@ -24,13 +26,10 @@ import java.util.ArrayList;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private Context mContext = SplashActivity.this;
+    private final Context mContext = SplashActivity.this;
     private Handler handler;
-    private Lang lang;
-    private BaseUtils baseUtils;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    TextView version;
-    private Runnable runnable = new Runnable() {
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             redirectToApp();
@@ -53,11 +52,10 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        baseUtils = new BaseUtils(this);
-        lang = new Lang(this, null);
+        BaseUtils baseUtils = new BaseUtils(this);
+        Lang lang = new Lang(this, null);
         lang.setAppLanguage(lang.getAppLanguage());
-        version = (TextView) findViewById(R.id.version);
-        version.setText("v" + BuildConfig.VERSION_NAME);
+
         try {
             MainPost mainPost = new MainPost();
             ArrayList<PostItem> list = new ArrayList<PostItem>();

@@ -17,5 +17,11 @@
 #}
 -ignorewarnings
 -keep class * {
-    public private *;
+    public *;
+    private *;
 }
+-keep class com.riversanskiriti.prarang.** { *; }
+-keep class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+

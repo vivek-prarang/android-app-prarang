@@ -154,11 +154,11 @@ public class DbHandler extends SQLiteOpenHelper {
             mItem.setImageList(new ArrayList<String>(Arrays.asList(c.getString(6).split("##"))));
             mItem.setTagList(new ArrayList<String>(Arrays.asList(c.getString(7).split("##"))));
             mItem.setTagJsonArrayString(c.getString(8));
-            try {
+      /*      try {
                 mItem.setTagList(new JSONArray(c.getString(8)));
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }*/
             mItem.setTotalLike(Integer.parseInt(c.getString(9)));
             mItem.setTotalComment(Integer.parseInt(c.getString(10)));
             mItem.setDateTime(c.getString(11));

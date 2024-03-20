@@ -25,7 +25,7 @@
 
     <!-- Login Activity-->
     <string name="hint_enternumber">अपना फोन नंबर लिखें</string>
-    <string name="hint_entername">अपना नाम लिखें</string>
+    <string name="hint_entername">नाम</string>
     <string name="hint_enterotp">ओ.टी. पी. दर्ज करें </string>
     <string name="text_viewhindi">हिन्दी पोस्ट देखें</string>
     <string name="text_viewenglish">अंग्रेजी पोस्ट देखें</string>
@@ -79,7 +79,8 @@
 
     <!-- Messages-->
     <string name="msg_selectLang">कृपया पहले एक भाषा चुनें।</string>
-    <string name="cond_selectothercity">*अन्य शहरों का चयन करें</string>
+    <string name="cond_selectothercity">शहर के नाम का चयन करें:</string>
+    <string name="cond_select_country_name">देश के नाम का चयन करें:</string>
 
     <!--Login Messages-->
     <string name="msg_selectonegeo">कृपया कम से कम एक भूगोल का चयन करें</string>

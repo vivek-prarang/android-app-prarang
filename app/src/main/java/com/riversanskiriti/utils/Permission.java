@@ -2,6 +2,7 @@ package com.riversanskiriti.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -31,7 +32,7 @@ public class Permission {
 
     public boolean chckSelfPermission(String permissionName) {
         //Up to LOLIPOP return true
-        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
             return true;
         }
         //Getting the permission status
@@ -42,6 +43,22 @@ public class Permission {
         }
         //If permission is not granted returning false
         return false;
+    }
+
+    public boolean checkSelfPermissionMultiple(String[] permissions) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            // Permissions are not required for SDK versions below Lollipop (21 and below)
+            return true;
+        }
+
+        for (String permission : permissions) {
+            int result = ContextCompat.checkSelfPermission(mContext, permission);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     //Requesting permission
@@ -86,4 +103,40 @@ public class Permission {
             ActivityCompat.requestPermissions((AppCompatActivity) mContext, new String[]{permissionName}, requestCode);
         }
     }
+
+    public void requestPermissionMultiple(String[] permissions, Fragment fragment) {
+        if (fragment != null) {
+            if (shouldShowRequestPermissionRationale(fragment, permissions)) {
+                // Explain why you need these permissions
+            }
+            // Finally, ask for the permissions
+            fragment.requestPermissions(permissions, requestCode);
+        } else {
+            if (shouldShowRequestPermissionRationale((AppCompatActivity) mContext, permissions)) {
+                // Explain why you need these permissions
+            }
+            // Finally, ask for the permissions
+            ActivityCompat.requestPermissions((AppCompatActivity) mContext, permissions, requestCode);
+        }
+        requestCode = 0;
+    }
+
+    private boolean shouldShowRequestPermissionRationale(Fragment fragment, String[] permissions) {
+        for (String permission : permissions) {
+            if (fragment.shouldShowRequestPermissionRationale(permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean shouldShowRequestPermissionRationale(AppCompatActivity activity, String[] permissions) {
+        for (String permission : permissions) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
